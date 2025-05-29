@@ -1,0 +1,38 @@
+.pageContainer {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pageContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.statusBadge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.statusActive {
+  background: #c6f6d5;
+  color: #22543d;
+}
+
+.statusInactive {
+  background: #fed7d7;
+  color: #742a2a;
+}
+

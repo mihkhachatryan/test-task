@@ -1,0 +1,165 @@
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdownButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: white;
+  color: #374151;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 120px;
+}
+
+.dropdownButton:hover:not(:disabled) {
+  border-color: #9ca3af;
+}
+
+.dropdownButton:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.dropdownButton.open {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.dropdownValue {
+  flex: 1;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdownIcon {
+  display: flex;
+  align-items: center;
+  margin-left: 0.5rem;
+  color: #9ca3af;
+  transition: transform 0.3s ease;
+}
+
+.dropdownButton.open .dropdownIcon {
+  transform: rotate(180deg);
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  margin-top: 0.25rem;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.dropdownOption {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: none;
+  color: #374151;
+  font-size: 0.875rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dropdownOption:hover:not(:disabled) {
+  background-color: #f3f4f6;
+}
+
+.dropdownOption:focus {
+  outline: none;
+  background-color: #f3f4f6;
+}
+
+.dropdownOption.selected {
+  background-color: #eff6ff;
+  color: #1e40af;
+  font-weight: 500;
+}
+
+.dropdownOption.selected:hover {
+  background-color: #dbeafe;
+}
+
+.dropdownOption.optionDisabled {
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.dropdownOption.optionDisabled:hover {
+  background-color: transparent;
+}
+
+.dropdown.disabled .dropdownButton {
+  background-color: #f9fafb;
+  color: #9ca3af;
+  cursor: not-allowed;
+  border-color: #e5e7eb;
+}
+
+.dropdown.disabled .dropdownIcon {
+  color: #d1d5db;
+}
+
+.dropdownMenu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dropdownMenu::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.dropdownMenu::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.dropdownMenu::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+@keyframes dropdownSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdownMenu {
+  animation: dropdownSlide 0.2s ease-out;
+}
+
+@media (max-width: 768px) {
+  .dropdownButton {
+    min-width: auto;
+  }
+  
+  .dropdownMenu {
+    max-height: 150px;
+  }
+} 

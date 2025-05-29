@@ -1,0 +1,46 @@
+.tableContainer {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tableHeader {
+  background: #f7fafc;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #2d3748;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.tableCell {
+  padding: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  color: #4a5568;
+}
+
+.tableRow:hover {
+  background: #f7fafc;
+}
+
+.tableRow:last-child .tableCell {
+  border-bottom: none;
+}
+
+@media (max-width: 768px) {
+  .dataTable {
+    font-size: 0.875rem;
+  }
+
+  .tableHeader,
+  .tableCell {
+    padding: 0.75rem 0.5rem;
+  }
+} 
