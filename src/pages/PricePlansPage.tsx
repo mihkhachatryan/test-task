@@ -6,6 +6,7 @@ import { Filter } from "../components/Filter";
 import { pricePlans } from "../data/mockData";
 import { applyFilters } from "../utils/filterUtils";
 import type { FilterConfig } from "../types";
+import { pricePlansTableConfig } from "../config";
 import styles from "./Page.module.css";
 
 export default function PricePlansPage() {
@@ -29,50 +30,21 @@ export default function PricePlansPage() {
       
       <div className={styles.pageContent}>
         <Filter 
-          searchColumn="description"
-          searchPlaceholder="Search by description..."
+          searchColumn={pricePlansTableConfig.searchColumn}
+          searchPlaceholder={pricePlansTableConfig.searchPlaceholder}
           onFilterChange={setFilters} 
         />
 
         <Table
           data={searchResults}
-          columns={[
-            {
-              key: "description",
-              label: "Description",
-              render: (item) => <span>{item.description}</span>,
-            },
-            {
-              key: "active",
-              label: "Active",
-              render: (item) => (
-                <span className={`${styles.statusBadge} ${item.active ? styles.statusActive : styles.statusInactive}`}>
-                  {item.active ? "Yes" : "No"}
-                </span>
-              ),
-            },
-            {
-              key: "createdAt",
-              label: "Created At",
-              render: (item) => (
-                <span>{new Date(item.createdAt).toLocaleDateString()}</span>
-              ),
-            },
-            {
-              key: "removedAt",
-              label: "Removed At",
-              render: (item) => (
-                <span>{item.removedAt ? new Date(item.removedAt).toLocaleDateString() : "N/A"}</span>
-              ),
-            },
-          ]}
+          columns={pricePlansTableConfig.columns(styles)}
           onEdit={(item) => setEditingItem(item)}
         />
 
         {editingItem && (
           <EditModal<PricePlan>
             item={editingItem}
-            fields={["description"]}
+            fields={pricePlansTableConfig.editableFields}
             onSave={handleSave}
             onClose={() => setEditingItem(null)}
           />

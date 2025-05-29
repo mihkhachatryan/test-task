@@ -6,6 +6,7 @@ import { Filter } from "../components/Filter";
 import { pages } from "../data/mockData";
 import { applyFilters } from "../utils/filterUtils";
 import type { FilterConfig } from "../types";
+import { pagesTableConfig } from "../config";
 import styles from "./Page.module.css";
 
 export default function PagesPage() {
@@ -29,50 +30,21 @@ export default function PagesPage() {
       
       <div className={styles.pageContent}>
         <Filter 
-          searchColumn="title"
-          searchPlaceholder="Search by title..."
+          searchColumn={pagesTableConfig.searchColumn}
+          searchPlaceholder={pagesTableConfig.searchPlaceholder}
           onFilterChange={setFilters} 
         />
 
         <Table
           data={searchResults}
-          columns={[
-            {
-              key: "title",
-              label: "Title",
-              render: (item) => <span>{item.title}</span>,
-            },
-            {
-              key: "active",
-              label: "Active",
-              render: (item) => (
-                <span className={`${styles.statusBadge} ${item.active ? styles.statusActive : styles.statusInactive}`}>
-                  {item.active ? "Yes" : "No"}
-                </span>
-              ),
-            },
-            {
-              key: "updatedAt",
-              label: "Updated At",
-              render: (item) => (
-                <span>{new Date(item.updatedAt).toLocaleDateString()}</span>
-              ),
-            },
-            {
-              key: "publishedAt",
-              label: "Published At",
-              render: (item) => (
-                <span>{item.publishedAt ? new Date(item.publishedAt).toLocaleDateString() : "N/A"}</span>
-              ),
-            },
-          ]}
+          columns={pagesTableConfig.columns(styles)}
           onEdit={(item) => setEditingItem(item)}
         />
 
         {editingItem && (
           <EditModal<PageData>
             item={editingItem}
-            fields={["title"]}
+            fields={pagesTableConfig.editableFields}
             onSave={handleSave}
             onClose={() => setEditingItem(null)}
           />
