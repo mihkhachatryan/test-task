@@ -13,7 +13,7 @@ export default function PricePlansPage() {
   const [filters, setFilters] = useState<FilterConfig[]>([]);
   const [editingItem, setEditingItem] = useState<PricePlan | null>(null);
 
-  const filteredData = useMemo(() => 
+  const searchResults = useMemo(() => 
     applyFilters(data, filters), [data, filters]
   );
 
@@ -35,7 +35,7 @@ export default function PricePlansPage() {
         />
 
         <Table
-          data={filteredData}
+          data={searchResults}
           columns={[
             {
               key: "description",

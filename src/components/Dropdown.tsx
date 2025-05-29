@@ -12,7 +12,9 @@ export function Dropdown({
   icon
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [focusedIndex, setFocusedIndex] = useState(-1);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const selectedOption = options.find(option => option.value === value);
 
@@ -20,12 +22,24 @@ export function Dropdown({
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
+        setFocusedIndex(-1);
       }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      const selectedIndex = options.findIndex(option => option.value === value);
+      const firstEnabledIndex = options.findIndex(option => !option.disabled);
+      const initialIndex = selectedIndex >= 0 && !options[selectedIndex].disabled ? selectedIndex : firstEnabledIndex;
+      setFocusedIndex(initialIndex >= 0 ? initialIndex : -1);
+    } else {
+      setFocusedIndex(-1);
+    }
+  }, [isOpen, options, value]);
 
   const handleToggle = () => {
     if (!disabled) {
@@ -36,6 +50,29 @@ export function Dropdown({
   const handleOptionClick = (optionValue: string) => {
     onChange(optionValue);
     setIsOpen(false);
+    setFocusedIndex(-1);
+  };
+
+  const moveToNextOption = () => {
+    const nextIndex = options.findIndex((option, index) => 
+      index > focusedIndex && !option.disabled
+    );
+    if (nextIndex >= 0) {
+      setFocusedIndex(nextIndex);
+    }
+  };
+
+  const moveToPreviousOption = () => {
+    let prevIndex = -1;
+    for (let i = focusedIndex - 1; i >= 0; i--) {
+      if (!options[i].disabled) {
+        prevIndex = i;
+        break;
+      }
+    }
+    if (prevIndex >= 0) {
+      setFocusedIndex(prevIndex);
+    }
   };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
@@ -45,23 +82,39 @@ export function Dropdown({
       case 'Enter':
       case ' ':
         event.preventDefault();
-        setIsOpen(!isOpen);
+        if (!isOpen) {
+          setIsOpen(true);
+        } else if (focusedIndex >= 0 && !options[focusedIndex].disabled) {
+          handleOptionClick(options[focusedIndex].value);
+        }
         break;
       case 'Escape':
+        event.preventDefault();
         setIsOpen(false);
+        setFocusedIndex(-1);
         break;
       case 'ArrowDown':
         event.preventDefault();
         if (!isOpen) {
           setIsOpen(true);
+        } else {
+          moveToNextOption();
         }
         break;
       case 'ArrowUp':
         event.preventDefault();
-        if (isOpen) {
-          setIsOpen(false);
+        if (!isOpen) {
+          setIsOpen(true);
+        } else {
+          moveToPreviousOption();
         }
         break;
+    }
+  };
+
+  const handleOptionMouseEnter = (index: number) => {
+    if (!options[index].disabled) {
+      setFocusedIndex(index);
     }
   };
 
@@ -92,15 +145,18 @@ export function Dropdown({
       </button>
 
       {isOpen && (
-        <div className={styles.dropdownMenu} role="listbox">
-          {options.map((option) => (
+        <div className={styles.dropdownMenu} role="listbox" ref={menuRef}>
+          {options.map((option, index) => (
             <button
               key={option.value}
               type="button"
               className={`${styles.dropdownOption} ${
                 option.value === value ? styles.selected : ''
-              } ${option.disabled ? styles.optionDisabled : ''}`}
+              } ${option.disabled ? styles.optionDisabled : ''} ${
+                index === focusedIndex ? styles.focused : ''
+              }`}
               onClick={() => !option.disabled && handleOptionClick(option.value)}
+              onMouseEnter={() => handleOptionMouseEnter(index)}
               disabled={option.disabled}
               role="option"
               aria-selected={option.value === value}

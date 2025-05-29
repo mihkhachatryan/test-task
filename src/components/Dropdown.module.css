@@ -110,6 +110,11 @@
   background-color: transparent;
 }
 
+.dropdownOption.focused {
+  background-color: #f3f4f6;
+  outline-offset: -2px;
+}
+
 .dropdown.disabled .dropdownButton {
   background-color: #f9fafb;
   color: #9ca3af;

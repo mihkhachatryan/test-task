@@ -13,7 +13,7 @@ export default function ProductsPage() {
   const [filters, setFilters] = useState<FilterConfig[]>([]);
   const [editingItem, setEditingItem] = useState<Product | null>(null);
 
-  const filteredData = useMemo(() => 
+  const searchResults = useMemo(() => 
     applyFilters(data, filters), [data, filters]
   );
 
@@ -35,7 +35,7 @@ export default function ProductsPage() {
         />
 
         <Table
-          data={filteredData}
+          data={searchResults}
           columns={[
             {
               key: "name",
